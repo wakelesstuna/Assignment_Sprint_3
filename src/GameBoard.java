@@ -19,6 +19,7 @@ public class GameBoard extends JFrame {
     JLabel gameTime = new JLabel("Time: ");
     JLabel playerName = new JLabel("Player: ");
 
+    JButton newGamebutton = new JButton("New Game");
 
     public GameBoard(){
         add(parent);
@@ -26,7 +27,9 @@ public class GameBoard extends JFrame {
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
+        title.add(newGamebutton);
         title.add(labelTitle);
+
 
         bottomPanel.add(playerName);
         bottomPanel.add(gameTime);
@@ -37,6 +40,7 @@ public class GameBoard extends JFrame {
         setLocation(600,200);
         setSize(700,700);
         setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public List<Button> buttonFactory(){
@@ -55,6 +59,9 @@ public class GameBoard extends JFrame {
             System.out.println("Working " + Button.getButtonID());
         });
     }
+
+
+
     public void shuffle (){
         Collections.shuffle(buttons);
     }
