@@ -11,7 +11,7 @@ public class GameBoard extends JFrame {
 
     JPanel parent = new JPanel(new BorderLayout());
     JPanel title = new JPanel();
-    JPanel gameBoard = new JPanel(new GridLayout(4,4));
+    JPanel gameBoard = new JPanel(new GridLayout(4, 4));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
     JLabel labelTitle = new JLabel("Best Game Ever");
@@ -20,7 +20,7 @@ public class GameBoard extends JFrame {
     JLabel playerName = new JLabel("Player: ");
 
 
-    public GameBoard(){
+    public GameBoard() {
         add(parent);
         parent.add(title, BorderLayout.NORTH);
         parent.add(gameBoard, BorderLayout.CENTER);
@@ -34,12 +34,12 @@ public class GameBoard extends JFrame {
         buttons = buttonFactory();
         renderButtons(buttons);
 
-        setLocation(600,200);
-        setSize(700,700);
+        setLocation(600, 200);
+        setSize(700, 700);
         setVisible(true);
     }
 
-    public List<Button> buttonFactory(){
+    public List<Button> buttonFactory() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             buttons.add(new Button(new JButton("Tile " + i), i));
@@ -49,22 +49,10 @@ public class GameBoard extends JFrame {
         return buttons;
     }
 
-    public void renderButtons(List<Button> list){
+    public void renderButtons(List<Button> list) {
         list.forEach(Button -> {
             gameBoard.add(Button.getButtons());
             System.out.println("Working " + Button.getButtonID());
         });
-    }
-    public void shuffle (){
-        Collections.shuffle(buttons);
-    }
-
-    public void reset () throws CloneNotSupportedException {
-        List <Button> tempList = new ArrayList<>();
-        for (var button : buttons) {
-            int temp = button.getButtonID();
-            tempList.add(temp, button);
-        }
-        buttons = tempList;
     }
 }
