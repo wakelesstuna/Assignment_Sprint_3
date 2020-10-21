@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GameBoard extends JFrame {
 
@@ -52,5 +54,17 @@ public class GameBoard extends JFrame {
             gameBoard.add(Button.getButtons());
             System.out.println("Working " + Button.getButtonID());
         });
+    }
+    public void shuffle (){
+        Collections.shuffle(buttons);
+    }
+
+    public void reset () throws CloneNotSupportedException {
+        List <Button> tempList = new ArrayList<>();
+        for (var button : buttons) {
+            int temp = button.getButtonID();
+            tempList.add(temp, button);
+        }
+        buttons = tempList;
     }
 }
