@@ -5,6 +5,7 @@ public class Util {
 
     int seconds;
     int minutes;
+    Timer timer;
 
     public void loadGameMusic(){
 
@@ -32,12 +33,15 @@ public class Util {
         };
 
         int timerDelay = 1000;
-        Timer timer = new Timer(timerDelay, gameTimer);
+        timer = new Timer(timerDelay, gameTimer);
         timer.start();
     }
 
     public void gameTimerStop(){
-
+        timer.stop();
+    }
+    public void gameTimerReset(){
+        timer.restart();
     }
 
     public void addToScoreBoard(){
@@ -53,4 +57,7 @@ public class Util {
 
     }
 
+    public Timer getTimer() {
+        return timer;
+    }
 }

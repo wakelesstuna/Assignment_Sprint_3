@@ -28,6 +28,12 @@ public class GameBoard extends JFrame {
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
+        newGamebutton.addActionListener(e ->{
+            shuffle(buttons);
+            renderButtons(buttons);
+            u.gameTimerStop();
+        });
+
         title.add(newGamebutton);
         title.add(labelTitle);
 
@@ -72,5 +78,6 @@ public class GameBoard extends JFrame {
         }
         buttons = tempList;
     }
+
 
 }
