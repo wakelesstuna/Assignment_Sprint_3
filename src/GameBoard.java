@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GameBoard extends JFrame {
 
@@ -54,4 +56,8 @@ public class GameBoard extends JFrame {
             System.out.println("Working " + Button.getButtonID());
         });
     }
+    public void shuffle (){
+        Collections.shuffle(buttons);
+    }
+
 }
