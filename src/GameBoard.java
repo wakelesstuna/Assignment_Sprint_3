@@ -59,4 +59,13 @@ public class GameBoard extends JFrame {
         Collections.shuffle(buttons);
     }
 
+    public void reset (){
+        List <Button> tempList = new ArrayList<>();
+        for (var button : buttons) {
+            int temp = button.getButtonID();
+            tempList.add(temp, button);
+        }
+        buttons = tempList;
+    }
+
 }
