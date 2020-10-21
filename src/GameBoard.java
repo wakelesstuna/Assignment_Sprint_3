@@ -6,6 +6,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> buttons;
+    Util u = new Util();
 
     JPanel parent = new JPanel(new BorderLayout());
     JPanel title = new JPanel();
@@ -14,7 +15,7 @@ public class GameBoard extends JFrame {
 
     JLabel labelTitle = new JLabel("Best Game Ever");
 
-    JLabel gameTime = new JLabel("Time: ");
+    JLabel gameTime = new JLabel();
     JLabel playerName = new JLabel("Player: ");
 
 
@@ -26,6 +27,7 @@ public class GameBoard extends JFrame {
 
         title.add(labelTitle);
 
+        u.gameTimer(gameTime);
         bottomPanel.add(playerName);
         bottomPanel.add(gameTime);
 

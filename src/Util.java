@@ -14,7 +14,7 @@ public class Util {
 
     }
 
-    public void gameTimer(){
+    public void gameTimer(JLabel label){
         ActionListener gameTimer = e -> {
             String secondZero = "";
             if (seconds < 59) {
@@ -26,14 +26,14 @@ public class Util {
                 seconds = 0;
                 minutes++;
             }
+            label.setText("Tid: " + minutes + ':' + secondZero + seconds);
             System.out.println("Tid: " + minutes + ':' + secondZero + seconds);
             //Ska returna en String sen som man skriver ut till en label
         };
 
         int timerDelay = 1000;
-        Timer myTimer = new Timer(timerDelay, gameTimer);
-        myTimer.start();
-
+        Timer timer = new Timer(timerDelay, gameTimer);
+        timer.start();
     }
 
     public void gameTimerStop(){
