@@ -34,6 +34,7 @@ public class GameBoard extends JFrame {
         bottomPanel.add(gameTime);
 
         buttons = buttonFactory();
+        shuffle(buttons);
         renderButtons(buttons);
         setLocation(600,200);
         setSize(700,700);
@@ -56,8 +57,8 @@ public class GameBoard extends JFrame {
             System.out.println("Working " + Button.getButtonID());
         });
     }
-    public void shuffle (){
-        Collections.shuffle(buttons);
+    public void shuffle (List<Button> list){
+        Collections.shuffle(list);
     }
 
 }
