@@ -31,7 +31,6 @@ public class GameBoard extends JFrame {
 
         buttons = buttonFactory();
         renderButtons(buttons);
-
         setLocation(600,200);
         setSize(700,700);
         setVisible(true);
