@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -28,6 +31,17 @@ public class GameBoard extends JFrame {
     JButton cheatButton = new JButton("Cheat");
 
     public GameBoard(){
+        MouseAdapter m = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                gameBoard.removeAll();
+                shuffle();
+                renderButtons(buttons);
+
+            }
+        };
+
         add(parent);
         parent.add(title, BorderLayout.NORTH);
         parent.add(gameBoard, BorderLayout.CENTER);
@@ -50,6 +64,12 @@ public class GameBoard extends JFrame {
         buttons = buttonFactory();
         shuffle(buttons);
         renderButtons(buttons);
+
+
+
+
+        newGamebutton.addMouseListener(m);
+
         addMouseListenerOnAllGameBoardButtons();
         setLocation(600,200);
         setSize(700,700);
@@ -113,6 +133,9 @@ public class GameBoard extends JFrame {
 
     public class MouseListener implements java.awt.event.MouseListener {
 
+    public void shuffle(){
+        Collections.shuffle(buttons);
+    }
         @Override
         public void mouseClicked(MouseEvent e) {
             moveButtons();
