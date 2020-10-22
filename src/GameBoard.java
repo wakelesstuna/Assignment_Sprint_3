@@ -14,6 +14,9 @@ public class GameBoard extends JFrame {
 
     List<Button> buttons;
     Util u = new Util();
+    boolean gameOver = false;
+    String playerName = "oscar";
+    String musicPath = "src/assets/sound/Bubble-Gum-Puzzler-2 (online-audio-converter.com).wav";
 
     JPanel parent = new JPanel(new BorderLayout());
     JPanel title = new JPanel();
@@ -23,25 +26,29 @@ public class GameBoard extends JFrame {
     JLabel labelTitle = new JLabel("Best Game Ever");
 
     JLabel gameTime = new JLabel();
-    JLabel playerName = new JLabel("Player: ");
+    JLabel playerNameLabel = new JLabel("Player: " + playerName);
 
     JButton newGamebutton = new JButton("New Game");
     JButton cheatButton = new JButton("Cheat");
 
     public GameBoard(){
+        u.loadGameMusic(musicPath);
         add(parent);
         parent.add(title, BorderLayout.NORTH);
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
         newGamebutton.addActionListener(e ->{newGame();});
-        cheatButton.addActionListener(e -> {cheatButton();});
+        cheatButton.addActionListener(e -> {
+            cheatButton();
+            winScreen();
+            });
 
         title.add(newGamebutton);
         title.add(labelTitle);
 
         u.gameTimer(gameTime);
-        bottomPanel.add(playerName);
+        bottomPanel.add(playerNameLabel);
         bottomPanel.add(gameTime);
         bottomPanel.add(cheatButton);
 
@@ -75,12 +82,12 @@ public class GameBoard extends JFrame {
     }
 
     public void cheatButton(){
+        u.gameTimerStop();
         gameBoard.removeAll();
         buttons.clear();
         buttons = buttonFactory();
         renderButtons(buttons);
     }
-
 
     public void newGame(){
         gameBoard.removeAll();
@@ -94,6 +101,26 @@ public class GameBoard extends JFrame {
         renderButtons(buttons);
         u.gameTimerStop();
         u.gameTimer(gameTime);
+    }
+
+    public void winScreen(){
+
+        u.gameTimerStop();
+        String gameTimeComplete = gameTime.getText();
+        JFrame winFrame = new JFrame();
+        JPanel winPanel = new JPanel(new GridLayout(3,1));
+        JLabel winLabel = new JLabel("WINNER WINNER", SwingConstants.CENTER);
+        JLabel timeLabel = new JLabel(gameTimeComplete, SwingConstants.CENTER);
+        JLabel playername = new JLabel(playerName, SwingConstants.CENTER);
+
+        winPanel.add(playername);
+        winPanel.add(winLabel);
+        winPanel.add(timeLabel);
+        winFrame.add(winPanel);
+
+        winFrame.setLocation(600,200);
+        winFrame.setSize(300,300);
+        winFrame.setVisible(true);
     }
 
 }
