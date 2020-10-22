@@ -36,7 +36,7 @@ public class GameBoard extends JFrame {
             public void mouseClicked(MouseEvent e) {
 
                 gameBoard.removeAll();
-                shuffle();
+                shuffle(buttons);
                 renderButtons(buttons);
 
             }
@@ -64,9 +64,6 @@ public class GameBoard extends JFrame {
         buttons = buttonFactory();
         shuffle(buttons);
         renderButtons(buttons);
-
-
-
 
         newGamebutton.addMouseListener(m);
 
