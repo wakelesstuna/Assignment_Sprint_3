@@ -26,6 +26,7 @@ public class GameBoard extends JFrame {
     JLabel playerName = new JLabel("Player: ");
 
     JButton newGamebutton = new JButton("New Game");
+    JButton cheatButton = new JButton("Cheat");
 
     public GameBoard(){
         add(parent);
@@ -34,6 +35,7 @@ public class GameBoard extends JFrame {
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
         newGamebutton.addActionListener(e ->{newGame();});
+        cheatButton.addActionListener(e -> {cheatButton();});
 
         title.add(newGamebutton);
         title.add(labelTitle);
@@ -41,6 +43,7 @@ public class GameBoard extends JFrame {
         u.gameTimer(gameTime);
         bottomPanel.add(playerName);
         bottomPanel.add(gameTime);
+        bottomPanel.add(cheatButton);
 
         buttons = buttonFactory();
         shuffle(buttons);
@@ -69,6 +72,13 @@ public class GameBoard extends JFrame {
     }
     public void shuffle (List<Button> list){
         Collections.shuffle(list);
+    }
+
+    public void cheatButton(){
+        gameBoard.removeAll();
+        buttons.clear();
+        buttons = buttonFactory();
+        renderButtons(buttons);
     }
 
 
