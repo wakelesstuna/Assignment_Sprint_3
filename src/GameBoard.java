@@ -1,9 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+
 
 public class GameBoard extends JFrame {
 
@@ -28,11 +33,7 @@ public class GameBoard extends JFrame {
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
-        newGamebutton.addActionListener(e ->{
-            shuffle(buttons);
-            renderButtons(buttons);
-            u.gameTimerStop();
-        });
+        newGamebutton.addActionListener(e ->{newGame();});
 
         title.add(newGamebutton);
         title.add(labelTitle);
@@ -70,14 +71,19 @@ public class GameBoard extends JFrame {
         Collections.shuffle(list);
     }
 
-    public void reset (){
-        List <Button> tempList = new ArrayList<>();
-        for (var button : buttons) {
-            int temp = button.getButtonID();
-            tempList.add(temp, button);
-        }
-        buttons = tempList;
-    }
 
+    public void newGame(){
+        gameBoard.removeAll();
+        buttons.clear();
+        // TODO: 2020-10-21 fixa till private ocg getter och setters
+        u.seconds = 0;
+        u.minutes = 0;
+
+        buttons = buttonFactory();
+        shuffle(buttons);
+        renderButtons(buttons);
+        u.gameTimerStop();
+        u.gameTimer(gameTime);
+    }
 
 }
