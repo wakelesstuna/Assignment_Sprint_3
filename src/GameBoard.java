@@ -27,7 +27,6 @@ public class GameBoard extends JFrame {
     JLabel labelTitle = new JLabel("Best Game Ever");
 
     JLabel gameTime = new JLabel();
-    JLabel playerName = new JLabel("Player: ");
     JLabel clickCounter = new JLabel("Antal klick: " + u.counter);
     JLabel playerNameLabel = new JLabel("Player: " + playerName);
 
@@ -36,15 +35,13 @@ public class GameBoard extends JFrame {
 
     public GameBoard(){
         u.loadGameMusic(musicPath);
-    public GameBoard() {
+
         MouseAdapter m = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 gameBoard.removeAll();
                 shuffle();
                 renderButtons(buttons);
-
             }
         };
 
@@ -144,9 +141,9 @@ public class GameBoard extends JFrame {
         JPanel winPanel = new JPanel(new GridLayout(3,1));
         JLabel winLabel = new JLabel("WINNER WINNER", SwingConstants.CENTER);
         JLabel timeLabel = new JLabel(gameTimeComplete, SwingConstants.CENTER);
-        JLabel playername = new JLabel(playerName, SwingConstants.CENTER);
+        JLabel playernameLabel = new JLabel(playerName, SwingConstants.CENTER);
 
-        winPanel.add(playername);
+        winPanel.add(playernameLabel);
         winPanel.add(winLabel);
         winPanel.add(timeLabel);
         winFrame.add(winPanel);
