@@ -11,6 +11,7 @@ public class Util {
     int seconds;
     int minutes;
     Timer timer;
+    int counter = 0;
 
     public void loadGameMusic(String musicPath){
         try {
@@ -76,11 +77,23 @@ public class Util {
 
     }
 
-    public void clickCounter(){
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public String clickCounter(){
+        counter++;
+        System.out.println("counter value" + counter);
+        return "Antal klick: " + counter;
 
     }
 
-    public Timer getTimer() {
-        return timer;
+    public void clickcounterReset(){
+        counter = 0;
+        System.out.println("Du har nollställt klickräknaren");
+    }
+
+    public int getCounter() {
+        return counter;
     }
 }
