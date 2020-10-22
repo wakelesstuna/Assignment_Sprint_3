@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +11,7 @@ public class GameBoard extends JFrame {
 
     List<Button> buttons;
     Util u = new Util();
+    MouseListener m = new MouseListener();
 
     JPanel parent = new JPanel(new BorderLayout());
     JPanel title = new JPanel();
@@ -24,6 +22,7 @@ public class GameBoard extends JFrame {
 
     JLabel gameTime = new JLabel();
     JLabel playerName = new JLabel("Player: ");
+    JLabel clickCounter = new JLabel("Antal klick: " + u.counter);
 
     JButton newGamebutton = new JButton("New Game");
 
@@ -34,6 +33,8 @@ public class GameBoard extends JFrame {
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
         newGamebutton.addActionListener(e ->{newGame();});
+        gameBoard.addMouseListener(m);
+
 
         title.add(newGamebutton);
         title.add(labelTitle);
@@ -41,10 +42,12 @@ public class GameBoard extends JFrame {
         u.gameTimer(gameTime);
         bottomPanel.add(playerName);
         bottomPanel.add(gameTime);
+        bottomPanel.add(clickCounter);
 
         buttons = buttonFactory();
         shuffle(buttons);
         renderButtons(buttons);
+        addMouseListenerOnAllGameBoardButtons();
         setLocation(600,200);
         setSize(700,700);
         setVisible(true);
@@ -59,6 +62,11 @@ public class GameBoard extends JFrame {
         }
         buttons.add(new Button(new JButton(""), 0));
         return buttons;
+    }
+    public void addMouseListenerOnAllGameBoardButtons(){
+        for(var b : buttons){
+            b.getButtons().addMouseListener(m);
+        }
     }
 
     public void renderButtons(List<Button> list){
@@ -78,12 +86,47 @@ public class GameBoard extends JFrame {
         // TODO: 2020-10-21 fixa till private ocg getter och setters
         u.seconds = 0;
         u.minutes = 0;
+        u.clickcounterReset();
+        clickCounter.setText("Antal klick: " + u.counter);
 
         buttons = buttonFactory();
+        addMouseListenerOnAllGameBoardButtons();
         shuffle(buttons);
         renderButtons(buttons);
         u.gameTimerStop();
         u.gameTimer(gameTime);
+    }
+    public void moveButtons(){
+
+        clickCounter.setText(u.clickCounter());
+    }
+
+    public class MouseListener implements java.awt.event.MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            moveButtons();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 
 }
