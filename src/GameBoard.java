@@ -12,6 +12,7 @@ import java.util.List;
 
 public class GameBoard extends JFrame {
 
+    List<Button> winCondition;
     List<Button> buttons;
     Util u = new Util();
     MouseListener m = new MouseListener();
@@ -68,6 +69,7 @@ public class GameBoard extends JFrame {
         bottomPanel.add(clickCounter);
         bottomPanel.add(cheatButton);
 
+        winCondition = buttonFactory();
         buttons = buttonFactory();
         shuffle(buttons);
         renderButtons(buttons);
@@ -161,6 +163,17 @@ public class GameBoard extends JFrame {
     public void shuffle() {
         Collections.shuffle(buttons);
     }
+
+    public boolean winConditionMethod(){
+        for (int i = 0; i < winCondition.size(); i++) {
+            int tempWin = winCondition.get(i).getButtonID();
+            int tempActual = buttons.get(i).getButtonID();
+            if (tempWin != tempActual)
+                return false;
+        }
+        return true;
+    }
+
 
     public class MouseListener implements java.awt.event.MouseListener {
 
