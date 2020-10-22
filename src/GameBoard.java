@@ -18,7 +18,7 @@ public class GameBoard extends JFrame {
 
     JPanel parent = new JPanel(new BorderLayout());
     JPanel title = new JPanel();
-    JPanel gameBoard = new JPanel(new GridLayout(4,4));
+    JPanel gameBoard = new JPanel(new GridLayout(4, 4));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
     JLabel labelTitle = new JLabel("Best Game Ever");
@@ -30,13 +30,13 @@ public class GameBoard extends JFrame {
     JButton newGamebutton = new JButton("New Game");
     JButton cheatButton = new JButton("Cheat");
 
-    public GameBoard(){
+    public GameBoard() {
         MouseAdapter m = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
                 gameBoard.removeAll();
-                shuffle(buttons);
+                shuffle();
                 renderButtons(buttons);
 
             }
@@ -47,8 +47,12 @@ public class GameBoard extends JFrame {
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
-        newGamebutton.addActionListener(e ->{newGame();});
-        cheatButton.addActionListener(e -> {cheatButton();});
+        newGamebutton.addActionListener(e -> {
+            newGame();
+        });
+        cheatButton.addActionListener(e -> {
+            cheatButton();
+        });
         gameBoard.addMouseListener(m);
 
 
@@ -68,13 +72,13 @@ public class GameBoard extends JFrame {
         newGamebutton.addMouseListener(m);
 
         addMouseListenerOnAllGameBoardButtons();
-        setLocation(600,200);
-        setSize(700,700);
+        setLocation(600, 200);
+        setSize(700, 700);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public List<Button> buttonFactory(){
+    public List<Button> buttonFactory() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             buttons.add(new Button(new JButton("Tile " + i), i));
@@ -83,23 +87,25 @@ public class GameBoard extends JFrame {
         buttons.add(new Button(new JButton(""), 0));
         return buttons;
     }
-    public void addMouseListenerOnAllGameBoardButtons(){
-        for(var b : buttons){
+
+    public void addMouseListenerOnAllGameBoardButtons() {
+        for (var b : buttons) {
             b.getButtons().addMouseListener(m);
         }
     }
 
-    public void renderButtons(List<Button> list){
+    public void renderButtons(List<Button> list) {
         list.forEach(Button -> {
             gameBoard.add(Button.getButtons());
             System.out.println("Working " + Button.getButtonID());
         });
     }
-    public void shuffle (List<Button> list){
+
+    public void shuffle(List<Button> list) {
         Collections.shuffle(list);
     }
 
-    public void cheatButton(){
+    public void cheatButton() {
         gameBoard.removeAll();
         buttons.clear();
         buttons = buttonFactory();
@@ -107,7 +113,7 @@ public class GameBoard extends JFrame {
     }
 
 
-    public void newGame(){
+    public void newGame() {
         gameBoard.removeAll();
         buttons.clear();
         // TODO: 2020-10-21 fixa till private ocg getter och setters
@@ -123,16 +129,19 @@ public class GameBoard extends JFrame {
         u.gameTimerStop();
         u.gameTimer(gameTime);
     }
-    public void moveButtons(){
+
+    public void moveButtons() {
 
         clickCounter.setText(u.clickCounter());
     }
 
-    public class MouseListener implements java.awt.event.MouseListener {
-
-    public void shuffle(){
+    public void shuffle() {
         Collections.shuffle(buttons);
     }
+
+    public class MouseListener implements java.awt.event.MouseListener {
+
+
         @Override
         public void mouseClicked(MouseEvent e) {
             moveButtons();
