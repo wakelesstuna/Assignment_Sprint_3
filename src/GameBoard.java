@@ -74,7 +74,9 @@ public class GameBoard extends JFrame {
     public List<Button> buttonFactory() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
-            buttons.add(new Button(new JButton("Tile " + i), i));
+            JButton button = new JButton(""+i);
+            button.setFont(new Font("TimesNewRoman", Font.BOLD, 25));
+            buttons.add(new Button(button, i));
             System.out.println("Brick " + i + " created");
         }
 
