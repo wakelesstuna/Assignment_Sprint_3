@@ -12,7 +12,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> winCondition = buttonFactory();
-    List<Button> buttonsList = buttonFactoryImage();
+    List<Button> buttonsList = buttonFactory();
     Util u = new Util();
 
     boolean gameOver = false;
@@ -125,6 +125,7 @@ public class GameBoard extends JFrame {
         gameBoard.removeAll();
         buttonsList.clear();
         renderButtons(winCondition);
+        gameBoard.updateUI();
     }
 
     public void newGame() {
