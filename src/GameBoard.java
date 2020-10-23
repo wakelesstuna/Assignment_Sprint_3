@@ -12,7 +12,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> winCondition = buttonFactory();
-    List<Button> buttonsList = buttonFactory();
+    List<Button> buttonsList = buttonFactoryImage();
     Util u = new Util();
 
     boolean gameOver = false;
@@ -22,7 +22,7 @@ public class GameBoard extends JFrame {
 
     ImagePanel parent = new ImagePanel("src/assets/image/BackMain.jpg");
     JPanel title = new JPanel();
-    JPanel gameBoard = new JPanel(new GridLayout(4, 4));
+    JPanel gameBoard = new JPanel(new GridLayout(4, 4, 0, 0));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
     JLabel labelTitle = new JLabel("----------Best Game Ever----------");
@@ -109,7 +109,7 @@ public class GameBoard extends JFrame {
     }
 
     public void newGame() {
-        setImageOnButton();
+
         gameOver = false;
         gameBoard.removeAll();
         buttonsList.clear();
@@ -337,7 +337,7 @@ public class GameBoard extends JFrame {
         int row = 4;
         int column = 4;
         try {
-            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\sunsetnew.jpg"));
+            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\smiley.jpg"));
 
             int pictureWidth = originalImgage.getWidth();
             int pictureHeight = originalImgage.getHeight();
@@ -347,17 +347,19 @@ public class GameBoard extends JFrame {
 
             int x = 0;
             int y = 0;
+            int counter = 1;
 
             for (int i = 0; i < 16; i++) {
                 y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
-                        System.out.println("creating piece: " + i + " " + j);
+
+                        System.out.println("creating piece: " + counter);
 
                         BufferedImage SubImgage = originalImgage.getSubimage(y, x, buttonWidth, buttonHeight);
-                        File outputFile = new File("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
+                        File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
                         ImageIO.write(SubImgage, "jpg", outputFile);
-
+                        counter++;
                         y += buttonWidth;
 
                     } catch (Exception e) {
@@ -373,6 +375,25 @@ public class GameBoard extends JFrame {
 
         }
     }
+    public List<Button> buttonFactoryImage() {
+        List<Button> buttons = new ArrayList<>();
+        for (int i = 1; i < 16; i++) {
+            ImageIcon image = new ImageIcon("Pictures\\SplitImage\\smiley" + i + ".JPG");
+            buttons.add(new Button(new JButton("Tile " + i), i, image));
+            System.out.println("Brick " + i + " created");
+        }
+
+
+        JButton blankButton = new JButton("");
+        blankButton.setOpaque(false);
+        blankButton.setContentAreaFilled(false);
+        blankButton.setBorderPainted(false);
+        Button b = new Button(blankButton, 0);
+
+
+        buttons.add(b);
+        return buttons;
+    }
     public void setImageOnButton(){
         int row = 4;
         int column = 4;
@@ -382,12 +403,6 @@ public class GameBoard extends JFrame {
             for (int j = 0; j < column; j++) {
                 counter++;
                 ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
-                if (buttonsList.get(counter).getButtonID() == 0) {
-                    continue;
-                }
-                else{
-                    buttonsList.get(counter).getButton().setIcon(image);
-                }
 
             }
         }

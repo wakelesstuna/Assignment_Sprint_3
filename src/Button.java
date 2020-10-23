@@ -9,6 +9,14 @@ public class Button {
         this.buttonID = buttonID;
     }
 
+    public Button (JButton button, int buttonID, ImageIcon imageIcon){
+
+        button.setIcon(imageIcon);
+        this.button = button;
+        this.buttonID = buttonID;
+
+    }
+
     public JButton getButton(){
         return button;
     }
