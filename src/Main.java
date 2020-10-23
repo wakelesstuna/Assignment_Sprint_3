@@ -7,28 +7,26 @@ public class Main {
     }
 
 }
-
-
 /*
  Utilklass med
-    - bakgrundsmusik
-    - clicka på ruta
-    - tidåtgång
-    - antal klick
-    - stoppa tiden
+   X - bakgrundsmusik
+   X - clicka på ruta
+   X - tidåtgång
+   X - antal klick
+   X - stoppa tiden
     - Scoreboard
-    - hitta "win condition" foreach genom alla ID getGrid (0,0)
-        - När alla ligger rätt bricka grön
+   X - hitta "win condition" foreach genom alla ID getGrid (0,0)
+         X - När alla ligger rätt bricka grön
         - annars röd
 
  Gameboard klass
-    - 16 gridlayout
-    - knapp med nytt spel
-        - scramblebuttons
-    - knapp med "fusk" lösning
+    X - 16 gridlayout
+    X - knapp med nytt spel
+       X - scramblebuttons
+    X- knapp med "fusk" lösning
         -allt hamnar på rättplats
     - meddelande när man vunnit
- Brickklass med brickobjekt
-    - knapp
-    - knappid
+ X - Brickklass med brickobjekt
+        X - knapp
+        X - knappid
  */
