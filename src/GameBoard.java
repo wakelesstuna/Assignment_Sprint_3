@@ -1,85 +1,66 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 
 
 public class GameBoard extends JFrame {
 
-    List<Button> winCondition;
-    List<Button> buttons;
+    List<Button> winCondition = buttonFactory();
+    List<Button> buttonsList = buttonFactory();
     Util u = new Util();
-    MouseListener m = new MouseListener();
-    boolean gameOver = false;
-    String playerName = "oscar";
-    String musicPath = "src/assets/sound/Bubble-Gum-Puzzler-2 (online-audio-converter.com).wav";
 
-    JPanel parent = new JPanel(new BorderLayout());
+    boolean gameOver = false;
+    String playerName;
+    String musicPath = "src/assets/sound/Bubble-Gum-Puzzler-2 (online-audio-converter.com).wav";
+    String clickPath = "src/assets/sound/Lamp-Switch_Off (online-audio-converter.com).wav";
+
+    ImagePanel parent = new ImagePanel("src/assets/image/BackMain.jpg");
     JPanel title = new JPanel();
     JPanel gameBoard = new JPanel(new GridLayout(4, 4));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
-    JLabel labelTitle = new JLabel("Best Game Ever");
+    JLabel labelTitle = new JLabel("----------Best Game Ever----------");
 
     JLabel gameTime = new JLabel();
     JLabel clickCounter = new JLabel("Antal klick: " + u.counter);
-    JLabel playerNameLabel = new JLabel("Player: " + playerName);
+    JLabel playerNameLabel;
 
-    JButton newGamebutton = new JButton("New Game");
+    JButton newGameButton = new JButton("New Game");
     JButton cheatButton = new JButton("Cheat");
 
-    public GameBoard(){
-        u.loadGameMusic(musicPath);
-
-        MouseAdapter m = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                gameBoard.removeAll();
-                shuffle();
-                renderButtons(buttons);
-            }
-        };
+    public GameBoard(String playerName) {
+        u.loadGameMusic(musicPath); // comment out to kill music
+        parent.setLayout(new FlowLayout());
 
         add(parent);
         parent.add(title, BorderLayout.NORTH);
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
-        newGamebutton.addActionListener(e -> {
-            newGame();
-        });
-        cheatButton.addActionListener(e -> {
-            cheatButton();
-            winScreen();
-        });
-        gameBoard.addMouseListener(m);
-
-        title.add(newGamebutton);
+        title.setBackground(Color.GREEN);
         title.add(labelTitle);
+        gameBoard.setPreferredSize(new Dimension(500,500));
+        labelTitle.setFont(new Font("Georgia", Font.BOLD, 32));
 
-        u.gameTimer(gameTime);
-        bottomPanel.add(playerNameLabel);
+        newGameButton.addActionListener(e -> newGame());
+        cheatButton.addActionListener(e ->cheatButton());
+
+        bottomPanel.add(playerNameLabel = new JLabel("Player: " + playerName));
         bottomPanel.add(gameTime);
         bottomPanel.add(clickCounter);
         bottomPanel.add(cheatButton);
+        bottomPanel.add(newGameButton);
 
-        winCondition = buttonFactory();
-        buttons = buttonFactory();
-        shuffle(buttons);
-        renderButtons(buttons);
+        shuffle(buttonsList);
+        renderButtons(buttonsList);
 
-        newGamebutton.addMouseListener(m);
-
-        addMouseListenerOnAllGameBoardButtons();
+        u.gameTimer(gameTime);
+        addActionListenerToButtons();
         setLocation(600, 200);
         setSize(700, 700);
+        setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -87,30 +68,18 @@ public class GameBoard extends JFrame {
     public List<Button> buttonFactory() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
-            buttons.add(new Button(new JButton("Tile " + i), i));
+            JButton button = new JButton(""+i);
+            button.setFont(new Font("TimesNewRoman", Font.BOLD, 25));
+            buttons.add(new Button(button, i));
             System.out.println("Brick " + i + " created");
         }
-
-        JButton blankButton = new JButton("");
-        blankButton.setOpaque(false);
-        blankButton.setContentAreaFilled(false);
-        blankButton.setBorderPainted(false);
-        Button b = new Button(blankButton, 0);
-
-
-        buttons.add(b);
+        buttons.add(new Button(new JButton(""), 0));
         return buttons;
-    }
-
-    public void addMouseListenerOnAllGameBoardButtons() {
-        for (var b : buttons) {
-            b.getButtons().addMouseListener(m);
-        }
     }
 
     public void renderButtons(List<Button> list) {
         list.forEach(Button -> {
-            gameBoard.add(Button.getButtons());
+            gameBoard.add(Button.getButton());
             System.out.println("Working " + Button.getButtonID());
         });
     }
@@ -122,24 +91,23 @@ public class GameBoard extends JFrame {
     public void cheatButton(){
         u.gameTimerStop();
         gameBoard.removeAll();
-        buttons.clear();
-        buttons = buttonFactory();
-        renderButtons(buttons);
+        buttonsList.clear();
+        renderButtons(winCondition);
     }
 
     public void newGame(){
+        gameOver = false;
         gameBoard.removeAll();
-        buttons.clear();
-        // TODO: 2020-10-21 fixa till private ocg getter och setters
-        u.seconds = 0;
-        u.minutes = 0;
-        u.clickcounterReset();
+        buttonsList.clear();
+        u.setSeconds(0);
+        u.setMinutes(0);
+        u.clickCounterReset();
         clickCounter.setText("Antal klick: " + u.counter);
 
-        buttons = buttonFactory();
-        addMouseListenerOnAllGameBoardButtons();
-        shuffle(buttons);
-        renderButtons(buttons);
+        buttonsList = buttonFactory();
+        addActionListenerToButtons();
+        shuffle(buttonsList);
+        renderButtons(buttonsList);
         u.gameTimerStop();
         u.gameTimer(gameTime);
     }
@@ -148,69 +116,174 @@ public class GameBoard extends JFrame {
 
         u.gameTimerStop();
         String gameTimeComplete = gameTime.getText();
+        JTextArea test = new JTextArea("were");
         JFrame winFrame = new JFrame();
         JPanel winPanel = new JPanel(new GridLayout(3,1));
         JLabel winLabel = new JLabel("WINNER WINNER", SwingConstants.CENTER);
         JLabel timeLabel = new JLabel(gameTimeComplete, SwingConstants.CENTER);
-        JLabel playernameLabel = new JLabel(playerName, SwingConstants.CENTER);
+        JLabel playerNameLabel = new JLabel(playerName, SwingConstants.CENTER);
 
-        winPanel.add(playernameLabel);
+        winPanel.add(playerNameLabel);
         winPanel.add(winLabel);
         winPanel.add(timeLabel);
-        winFrame.add(winPanel);
+        winFrame.add(test);
 
         winFrame.setLocation(600,200);
         winFrame.setSize(300,300);
         winFrame.setVisible(true);
     }
 
-    public void moveButtons() {
-
-        clickCounter.setText(u.clickCounter());
+    public void addActionListenerToButtons() {
+        for (Button button : buttonsList) {
+            if (button != null) {
+                button.getButton().addActionListener(l -> {
+                    u.addButtonClickSound(clickPath);
+                    checkIfClickedButtonIsNextToEmptyButton(button);
+                });
+            }
+        }
     }
 
-    public void shuffle() {
-        Collections.shuffle(buttons);
+    public int findEmptyButton() {
+        int emptyButtonIndex = 0;
+        for (Button button : buttonsList) {
+            if (button.getButtonID() == 0) {
+                emptyButtonIndex = buttonsList.indexOf(button);
+            }
+        }
+        return emptyButtonIndex;
     }
 
-    public boolean winConditionMethod(){
+    public void turnAllButtonsGreenWhenWin(){
+        for (Button button : buttonsList) {
+            button.getButton().setBackground(Color.GREEN);
+        }
+    }
+
+    public boolean isWinCondition(){
         for (int i = 0; i < winCondition.size(); i++) {
             int tempWin = winCondition.get(i).getButtonID();
-            int tempActual = buttons.get(i).getButtonID();
+            int tempActual = buttonsList.get(i).getButtonID();
             if (tempWin != tempActual)
                 return false;
         }
         return true;
     }
 
-
-    public class MouseListener implements java.awt.event.MouseListener {
-
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            moveButtons();
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
+    public void moveButton(int index) {
+        if(!gameOver) {
+            Collections.swap(buttonsList, index, findEmptyButton());
+            renderButtons(buttonsList);
+            clickCounter.setText("Antal klick: " + u.counter++);
+            gameBoard.updateUI();
+            if(gameOver = isWinCondition()){
+                turnAllButtonsGreenWhenWin();
+                winScreen();
+            }
         }
     }
 
+    // TODO: 2020-10-23 Build algorithm for check if game is winnable
+    // public void checkIfGameIsWinnable(){}
+
+    public void checkIfClickedButtonIsNextToEmptyButton(Button clickedButton) {
+        switch (buttonsList.indexOf(clickedButton)) {
+            case 0 -> { if (buttonsList.get(1).equals(buttonsList.get(findEmptyButton())))
+                moveButton(0);
+            else if (buttonsList.get(4).equals(buttonsList.get(findEmptyButton())))
+                moveButton(0); }
+            case 1 -> { if (buttonsList.get(0).equals(buttonsList.get(findEmptyButton())))
+                moveButton(1);
+            else if (buttonsList.get(2).equals(buttonsList.get(findEmptyButton())))
+                moveButton(1);
+            else if (buttonsList.get(5).equals(buttonsList.get(findEmptyButton())))
+                moveButton(1); }
+            case 2 -> { if (buttonsList.get(1).equals(buttonsList.get(findEmptyButton())))
+                moveButton(2);
+            else if (buttonsList.get(3).equals(buttonsList.get(findEmptyButton())))
+                moveButton(2);
+            else if (buttonsList.get(6).equals(buttonsList.get(findEmptyButton())))
+                moveButton(2); }
+            case 3 -> { if (buttonsList.get(2).equals(buttonsList.get(findEmptyButton())))
+                moveButton(3);
+            else if (buttonsList.get(7).equals(buttonsList.get(findEmptyButton())))
+                moveButton(3); }
+            case 4 -> { if (buttonsList.get(0).equals(buttonsList.get(findEmptyButton())))
+                moveButton(4);
+            else if (buttonsList.get(5).equals(buttonsList.get(findEmptyButton())))
+                moveButton(4);
+            else if (buttonsList.get(8).equals(buttonsList.get(findEmptyButton())))
+                moveButton(4); }
+            case 5 -> { if (buttonsList.get(1).equals(buttonsList.get(findEmptyButton())))
+                moveButton(5);
+            else if (buttonsList.get(6).equals(buttonsList.get(findEmptyButton())))
+                moveButton(5);
+            else if (buttonsList.get(4).equals(buttonsList.get(findEmptyButton())))
+                moveButton(5);
+            else if (buttonsList.get(9).equals(buttonsList.get(findEmptyButton())))
+                moveButton(5); }
+            case 6 -> { if (buttonsList.get(2).equals(buttonsList.get(findEmptyButton())))
+                moveButton(6);
+            else if (buttonsList.get(7).equals(buttonsList.get(findEmptyButton())))
+                moveButton(6);
+            else if (buttonsList.get(10).equals(buttonsList.get(findEmptyButton())))
+                moveButton(6);
+            else if (buttonsList.get(5).equals(buttonsList.get(findEmptyButton())))
+                moveButton(6); }
+            case 7 -> { if (buttonsList.get(3).equals(buttonsList.get(findEmptyButton())))
+                moveButton(7);
+            else if (buttonsList.get(6).equals(buttonsList.get(findEmptyButton())))
+                moveButton(7);
+            else if (buttonsList.get(11).equals(buttonsList.get(findEmptyButton())))
+                moveButton(7); }
+            case 8 -> { if (buttonsList.get(12).equals(buttonsList.get(findEmptyButton())))
+                moveButton(8);
+            else if (buttonsList.get(4).equals(buttonsList.get(findEmptyButton())))
+                moveButton(8);
+            else if (buttonsList.get(9).equals(buttonsList.get(findEmptyButton())))
+                moveButton(8); }
+            case 9 -> { if (buttonsList.get(5).equals(buttonsList.get(findEmptyButton())))
+                moveButton(9);
+            else if (buttonsList.get(10).equals(buttonsList.get(findEmptyButton())))
+                moveButton(9);
+            else if (buttonsList.get(8).equals(buttonsList.get(findEmptyButton())))
+                moveButton(9);
+            else if (buttonsList.get(13).equals(buttonsList.get(findEmptyButton())))
+                moveButton(9); }
+            case 10 -> { if (buttonsList.get(6).equals(buttonsList.get(findEmptyButton())))
+                moveButton(10);
+            else if (buttonsList.get(11).equals(buttonsList.get(findEmptyButton())))
+                moveButton(10);
+            else if (buttonsList.get(9).equals(buttonsList.get(findEmptyButton())))
+                moveButton(10);
+            else if (buttonsList.get(14).equals(buttonsList.get(findEmptyButton())))
+                moveButton(10); }
+            case 11 -> { if (buttonsList.get(7).equals(buttonsList.get(findEmptyButton())))
+                moveButton(11);
+            else if (buttonsList.get(10).equals(buttonsList.get(findEmptyButton())))
+                moveButton(11);
+            else if (buttonsList.get(15).equals(buttonsList.get(findEmptyButton())))
+                moveButton(11); }
+            case 12 -> { if (buttonsList.get(8).equals(buttonsList.get(findEmptyButton())))
+                moveButton(12);
+            else if (buttonsList.get(13).equals(buttonsList.get(findEmptyButton())))
+                moveButton(12); }
+            case 13 -> { if (buttonsList.get(12).equals(buttonsList.get(findEmptyButton())))
+                moveButton(13);
+            else if (buttonsList.get(9).equals(buttonsList.get(findEmptyButton())))
+                moveButton(13);
+            else if (buttonsList.get(14).equals(buttonsList.get(findEmptyButton())))
+                moveButton(13); }
+            case 14 -> { if (buttonsList.get(13).equals(buttonsList.get(findEmptyButton())))
+                moveButton(14);
+            else if (buttonsList.get(10).equals(buttonsList.get(findEmptyButton())))
+                moveButton(14);
+            else if (buttonsList.get(15).equals(buttonsList.get(findEmptyButton())))
+                moveButton(14); }
+            case 15 -> { if (buttonsList.get(11).equals(buttonsList.get(findEmptyButton())))
+                moveButton(15);
+            else if (buttonsList.get(14).equals(buttonsList.get(findEmptyButton())))
+                moveButton(15); }
+        }
+    }
 }

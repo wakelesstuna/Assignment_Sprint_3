@@ -8,10 +8,10 @@ import java.io.File;
 
 public class Util {
 
-    int seconds;
-    int minutes;
+    private int seconds;
+    private int minutes;
+    protected int counter = 0;
     Timer timer;
-    int counter = 0;
 
     public void loadGameMusic(String musicPath){
         try {
@@ -27,16 +27,26 @@ public class Util {
             } else {
                 JOptionPane.showMessageDialog(null, "Can't find background music file");
             }
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void buttonClickSound(){
-
+    public void addButtonClickSound(String musicPath){
+        try {
+            File music = new File(musicPath);
+            if (music.exists()) {
+                AudioInputStream readMusic = AudioSystem.getAudioInputStream(music);
+                Clip play = AudioSystem.getClip();
+                play.open(readMusic);
+                play.start();
+            } else {
+                JOptionPane.showMessageDialog(null, "Can't find click sound file");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void gameTimer(JLabel label){
@@ -88,12 +98,20 @@ public class Util {
 
     }
 
-    public void clickcounterReset(){
+    public void clickCounterReset(){
         counter = 0;
         System.out.println("Du har nollställt klickräknaren");
     }
 
     public int getCounter() {
         return counter;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
     }
 }

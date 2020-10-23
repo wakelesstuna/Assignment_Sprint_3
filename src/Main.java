@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        GameBoard runGame = new GameBoard();
+        GameBoard runGame = new GameBoard("Patrik");
     }
 
 }
