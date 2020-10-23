@@ -91,11 +91,12 @@ public class GameBoard extends JFrame {
             System.out.println("Brick " + i + " created");
         }
 
-        JButton button = new JButton("");
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        Button b = new Button(button, 0);
+        JButton blankButton = new JButton("");
+        blankButton.setOpaque(false);
+        blankButton.setContentAreaFilled(false);
+        blankButton.setBorderPainted(false);
+        Button b = new Button(blankButton, 0);
+
 
         buttons.add(b);
         return buttons;
