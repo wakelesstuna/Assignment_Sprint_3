@@ -12,7 +12,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> winCondition = buttonFactory();
-    List<Button> buttonsList = buttonFactoryImage();
+    List<Button> buttonsList = buttonFactory();
     Util u = new Util();
 
     boolean gameOver = false;
@@ -75,6 +75,26 @@ public class GameBoard extends JFrame {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
             buttons.add(new Button(new JButton("Tile " + i), i));
+            System.out.println("Brick " + i + " created");
+        }
+
+
+        JButton blankButton = new JButton("");
+        blankButton.setOpaque(false);
+        blankButton.setContentAreaFilled(false);
+        blankButton.setBorderPainted(false);
+        Button b = new Button(blankButton, 0);
+
+
+        buttons.add(b);
+        return buttons;
+    }
+
+    public List<Button> buttonFactoryImage() {
+        List<Button> buttons = new ArrayList<>();
+        for (int i = 1; i < 16; i++) {
+            ImageIcon image = new ImageIcon("Pictures\\SplitImage\\smiley" + i + ".JPG");
+            buttons.add(new Button(new JButton("" + i), i, image));
             System.out.println("Brick " + i + " created");
         }
 
@@ -375,24 +395,4 @@ public class GameBoard extends JFrame {
 
         }
     }
-    public List<Button> buttonFactoryImage() {
-        List<Button> buttons = new ArrayList<>();
-        for (int i = 1; i < 16; i++) {
-            ImageIcon image = new ImageIcon("Pictures\\SplitImage\\smiley" + i + ".JPG");
-            buttons.add(new Button(new JButton("Tile " + i), i, image));
-            System.out.println("Brick " + i + " created");
-        }
-
-
-        JButton blankButton = new JButton("");
-        blankButton.setOpaque(false);
-        blankButton.setContentAreaFilled(false);
-        blankButton.setBorderPainted(false);
-        Button b = new Button(blankButton, 0);
-
-
-        buttons.add(b);
-        return buttons;
-    }
-
 }
