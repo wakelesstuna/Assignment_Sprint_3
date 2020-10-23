@@ -12,7 +12,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> winCondition = buttonFactory();
-    List<Button> buttonsList = buttonFactory();
+    List<Button> buttonsList = buttonFactoryImage();
     Util u = new Util();
 
     boolean gameOver = false;
@@ -394,18 +394,5 @@ public class GameBoard extends JFrame {
         buttons.add(b);
         return buttons;
     }
-    public void setImageOnButton(){
-        int row = 4;
-        int column = 4;
-        int counter = 0;
 
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                counter++;
-                ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
-
-            }
-        }
-
-    }
 }
