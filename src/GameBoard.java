@@ -12,7 +12,7 @@ import java.util.List;
 public class GameBoard extends JFrame {
 
     List<Button> winCondition = buttonFactory();
-    List<Button> buttonsList = buttonFactory();
+    List<Button> buttonsList = buttonFactoryImage();
     Util u = new Util();
 
     boolean gameOver = false;
@@ -100,9 +100,8 @@ public class GameBoard extends JFrame {
 
 
         JButton blankButton = new JButton("");
-        blankButton.setOpaque(false);
-        blankButton.setContentAreaFilled(false);
-        blankButton.setBorderPainted(false);
+        blankButton.setBackground(Color.black);
+
         Button b = new Button(blankButton, 0);
 
 
