@@ -380,11 +380,14 @@ public class GameBoard extends JFrame {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-
-                ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
-                if (buttonsList.get(counter).getButtonID() != 0)
-                buttonsList.get(counter).getButton().setIcon(image);
                 counter++;
+                ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
+                if (buttonsList.get(counter).getButtonID() == 0) {
+                    continue;
+                }
+                else
+                    buttonsList.get(counter).getButton().setIcon(image);
+
             }
         }
 
