@@ -372,9 +372,6 @@ public class GameBoard extends JFrame {
                 y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
-
-                        System.out.println("creating piece: " + counter);
-
                         BufferedImage SubImgage = originalPicture.getSubimage(y, x, buttonWidth, buttonHeight);
                         File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
                         ImageIO.write(SubImgage, "jpg", outputFile);
