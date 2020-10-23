@@ -6,6 +6,7 @@ public class Main {
         StartMenu runGame = new StartMenu();
     }
 
+    }
 }
 /*
  Utilklass med
