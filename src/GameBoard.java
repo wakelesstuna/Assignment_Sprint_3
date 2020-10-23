@@ -34,8 +34,8 @@ public class GameBoard extends JFrame {
     JButton newGameButton = new JButton("New Game");
     JButton cheatButton = new JButton("Cheat");
 
-    public GameBoard(String playerName) throws IOException {
-        addPictureToButton();
+    public GameBoard(String playerName) {
+
         //u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());
 
@@ -76,6 +76,7 @@ public class GameBoard extends JFrame {
             buttons.add(new Button(new JButton("Tile " + i), i));
             System.out.println("Brick " + i + " created");
         }
+
 
         JButton blankButton = new JButton("");
         blankButton.setOpaque(false);
@@ -345,14 +346,14 @@ public class GameBoard extends JFrame {
             int x = 0;
             int y = 0;
 
-            for (int i = 0; i < row; i++) {
+            for (int i = 0; i < 16; i++) {
                 y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
                         System.out.println("creating piece: " + i + " " + j);
 
                         BufferedImage SubImgage = originalImgage.getSubimage(y, x, buttonWidth, buttonHeight);
-                        File outputFile = new File("Pictures\\sunset" + j + i + ".JPG");
+                        File outputFile = new File("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
                         ImageIO.write(SubImgage, "jpg", outputFile);
 
                         y += buttonWidth;
@@ -369,5 +370,19 @@ public class GameBoard extends JFrame {
             e.printStackTrace();
 
         }
+    }
+    public void setImageOnButton(){
+        int row = 4;
+        int column = 4;
+        int counter = 0;
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                counter++;
+                ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
+                buttonsList.get(counter).getButton().setIcon(image);
+            }
+        }
+
     }
 }
