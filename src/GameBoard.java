@@ -35,7 +35,7 @@ public class GameBoard extends JFrame {
     JButton cheatButton = new JButton("Cheat");
 
     public GameBoard(String playerName) {
-
+        splitImageInto16pieces();
         //u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());
 
@@ -60,6 +60,7 @@ public class GameBoard extends JFrame {
 
         shuffle(buttonsList);
         renderButtons(buttonsList);
+
 
         u.gameTimer(gameTime);
         addActionListenerToButtons();
@@ -108,6 +109,7 @@ public class GameBoard extends JFrame {
     }
 
     public void newGame() {
+        setImageOnButton();
         gameOver = false;
         gameBoard.removeAll();
         buttonsList.clear();
@@ -331,11 +333,11 @@ public class GameBoard extends JFrame {
         }
     }
 
-    public void addPictureToButton() {
+    public void splitImageInto16pieces() {
         int row = 4;
         int column = 4;
         try {
-            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\sunset.JPG"));
+            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\sunsetnew.jpg"));
 
             int pictureWidth = originalImgage.getWidth();
             int pictureHeight = originalImgage.getHeight();
@@ -378,9 +380,11 @@ public class GameBoard extends JFrame {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                counter++;
+
                 ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
+                if (buttonsList.get(counter).getButtonID() != 0)
                 buttonsList.get(counter).getButton().setIcon(image);
+                counter++;
             }
         }
 
