@@ -1,5 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +35,7 @@ public class GameBoard extends JFrame {
     JButton cheatButton = new JButton("Cheat");
 
     public GameBoard(String playerName) {
-        u.loadGameMusic(musicPath); // comment out to kill music
+        //u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());
 
         add(parent);
@@ -290,6 +294,14 @@ public class GameBoard extends JFrame {
                 moveButton(15);
             else if (buttonsList.get(14).equals(buttonsList.get(findEmptyButton())))
                 moveButton(15); }
+        }
+    }
+    public void addPictureToButton() throws IOException {
+        final BufferedImage source = ImageIO.read(new File("C:\\Users\\Min Dator\\Desktop\\Java\\Assignment\\OOPJ\\GameOFFifteen\\Pictures\\sunset"));
+        int idx = 0;
+        for (int y = 0; y < source.getHeight(); y += 16) {
+            ImageIO.write(source.getSubimage(0, y, 16, 16), "JPG", new File("C:\\Users\\Min Dator\\Desktop\\Java\\Assignment\\OOPJ\\GameOFFifteen\\Pictures\\sunset" + idx++ + ".JPG"));
+
         }
     }
 }
