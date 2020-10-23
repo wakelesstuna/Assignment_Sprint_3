@@ -356,10 +356,10 @@ public class GameBoard extends JFrame {
         int row = 4;
         int column = 4;
         try {
-            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\smiley.jpg"));
+            BufferedImage originalPicture = ImageIO.read(new File("Pictures\\smiley.jpg"));
 
-            int pictureWidth = originalImgage.getWidth();
-            int pictureHeight = originalImgage.getHeight();
+            int pictureWidth = originalPicture.getWidth();
+            int pictureHeight = originalPicture.getHeight();
 
             int buttonWidth = pictureWidth / column;
             int buttonHeight = pictureHeight / row;
@@ -375,7 +375,7 @@ public class GameBoard extends JFrame {
 
                         System.out.println("creating piece: " + counter);
 
-                        BufferedImage SubImgage = originalImgage.getSubimage(y, x, buttonWidth, buttonHeight);
+                        BufferedImage SubImgage = originalPicture.getSubimage(y, x, buttonWidth, buttonHeight);
                         File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
                         ImageIO.write(SubImgage, "jpg", outputFile);
                         counter++;
