@@ -22,7 +22,7 @@ public class GameBoard extends JFrame {
 
     ImagePanel parent = new ImagePanel("src/assets/image/BackMain.jpg");
     JPanel title = new JPanel();
-    JPanel gameBoard = new JPanel(new GridLayout(4, 4, 0, 0));
+    JPanel gameBoard = new JPanel(new GridLayout(4, 4));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
     JLabel labelTitle = new JLabel("----------Best Game Ever----------");
