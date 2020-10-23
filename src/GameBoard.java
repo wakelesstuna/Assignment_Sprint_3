@@ -385,8 +385,9 @@ public class GameBoard extends JFrame {
                 if (buttonsList.get(counter).getButtonID() == 0) {
                     continue;
                 }
-                else
+                else{
                     buttonsList.get(counter).getButton().setIcon(image);
+                }
 
             }
         }
