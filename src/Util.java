@@ -5,6 +5,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 public class Util {
 
@@ -74,18 +75,90 @@ public class Util {
     public void gameTimerStop(){
         timer.stop();
     }
-    public void gameTimerReset(){
-        timer.restart();
+
+    public boolean isGameSolvable(List<Button> buttonList, int rowsOfTheGame) {
+        if (!isEven(rowsOfTheGame)) {
+            return isEven(listInversionCount(buttonList));
+        } else {
+            if (isEven(rowsOfTheGame) && isEven(checkWitchRowEmptyButtonIsOn(buttonList))) {
+                return !isEven(listInversionCount(buttonList));
+            } else if (isEven(rowsOfTheGame) && isEven(listInversionCount(buttonList))) {
+                return !isEven(checkWitchRowEmptyButtonIsOn(buttonList));
+            }
+        }
+        return false;
     }
 
-    public void addToScoreBoard(){
-
+    /**
+     * Check if a number is even or not
+     *
+     * @param n int
+     * @return boolean
+     */
+    public boolean isEven(int n) {
+        return n % 2 == 0;
     }
 
-    // databas? prata med julia!
-    public void saveScoreBoard(){
-
+    /**
+     * Check witch row the emptyButton is on
+     *
+     * @param buttonsList list
+     * @return int
+     */
+    public int checkWitchRowEmptyButtonIsOn(List<Button> buttonsList) {
+        int emptyButton = findEmptyButton(buttonsList, 0);
+        if (emptyButton >= 0 && emptyButton <= 3) {
+            return 4;
+        } else if (emptyButton >= 4 && emptyButton <= 7) {
+            return 3;
+        } else if (emptyButton >= 8 && emptyButton <= 11) {
+            return 2;
+        } else if (emptyButton >= 12 && emptyButton <= 15) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
+
+    /**
+     * Finds Button with ButtonID 0, and return index as int
+     *
+     * @param buttonsList list
+     * @return int
+     */
+    public int findEmptyButton(List<Button> buttonsList, int buttonID) {
+        int emptyButtonIndex = 0;
+        for (Button button : buttonsList) {
+            if (button.getButtonID() == buttonID) {
+                emptyButtonIndex = buttonsList.indexOf(button);
+            }
+        }
+        return emptyButtonIndex;
+    }
+
+    /**
+     * Finds out the InterversionCount of a buttonlist based on the buttonID
+     *
+     * @param list Button
+     * @return int
+     */
+    public int listInversionCount(List<Button> list) {
+
+        int emptyButtonIndex = findEmptyButton(list, 0);
+        int count = 0;
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (!(i == emptyButtonIndex)) {
+                for (int j = i + 1; j < list.size(); j++) {
+                    if (list.get(i).getButtonID() > list.get(j).getButtonID()) {
+                        count += 1;
+                    }
+                }
+            }
+        }
+        System.out.println(count);
+        return count;
+    }
+
 
     public Timer getTimer() {
         return timer;

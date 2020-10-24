@@ -58,9 +58,7 @@ public class GameBoard extends JFrame {
         bottomPanel.add(cheatButton);
         bottomPanel.add(newGameButton);
 
-        shuffle(buttonsList);
-        renderButtons(buttonsList);
-
+        renderButtons(checkIfGameIsWinnable(shuffle(buttonsList), 4));
 
         u.gameTimer(gameTime);
         addActionListenerToButtons();
@@ -76,17 +74,16 @@ public class GameBoard extends JFrame {
         for (int i = 1; i < 16; i++) {
             JButton button = new JButton(""+i);
             button.setFont(new Font("TimesNewRoman", Font.BOLD, 25));
+            button.setBackground(new Color(255,51,51));
             buttons.add(new Button(button, i));
             System.out.println("Brick " + i + " created");
         }
 
-
-        JButton blankButton = new JButton("");
+        JButton blankButton = new JButton();
         blankButton.setOpaque(false);
         blankButton.setContentAreaFilled(false);
         blankButton.setBorderPainted(false);
         Button b = new Button(blankButton, 0);
-
 
         buttons.add(b);
         return buttons;
@@ -99,8 +96,11 @@ public class GameBoard extends JFrame {
         });
     }
 
-    public void shuffle(List<Button> list) {
+    public List<Button> shuffle(List<Button> list){
         Collections.shuffle(list);
+        int i = u.findEmptyButton(list, 0);
+        Collections.swap(list, i, list.size() -1);
+        return list;
     }
 
     public void cheatButton() {
@@ -108,6 +108,7 @@ public class GameBoard extends JFrame {
         gameBoard.removeAll();
         buttonsList.clear();
         renderButtons(winCondition);
+        gameBoard.updateUI();
     }
 
     public void newGame() {
@@ -186,6 +187,13 @@ public class GameBoard extends JFrame {
         return true;
     }
 
+    public List<Button> checkIfGameIsWinnable(List<Button> list, int numberOfRows){
+        while (u.isGameSolvable(list,numberOfRows)){
+            shuffle(list);
+        }
+        return list;
+    }
+
     public void moveButton(int index) {
         if (!gameOver) {
             Collections.swap(buttonsList, index, findEmptyButton());
@@ -198,9 +206,6 @@ public class GameBoard extends JFrame {
             }
         }
     }
-
-    // TODO: 2020-10-23 Build algorithm for check if game is winnable
-    // public void checkIfGameIsWinnable(){}
 
     public void checkIfClickedButtonIsNextToEmptyButton(Button clickedButton) {
         switch (buttonsList.indexOf(clickedButton)) {
