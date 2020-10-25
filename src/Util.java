@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Util {
 
+    Clip play;
     private int seconds;
     private int minutes;
     protected int counter = 0;
@@ -20,7 +21,7 @@ public class Util {
 
             if (music.exists()) {
                 AudioInputStream readMusic = AudioSystem.getAudioInputStream(music);
-                Clip play = AudioSystem.getClip();
+                play = AudioSystem.getClip();
                 play.open(readMusic);
                 play.start();
                 play.loop(Clip.LOOP_CONTINUOUSLY);
@@ -31,7 +32,15 @@ public class Util {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void stopMusic(){
+        play.stop();
+    }
+
+    public void playMusic(){
+        play.start();
+        play.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void addButtonClickSound(String musicPath){
