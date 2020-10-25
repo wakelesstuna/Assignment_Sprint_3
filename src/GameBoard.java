@@ -1,7 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -359,10 +358,10 @@ public class GameBoard extends JFrame {
         int row = 4;
         int column = 4;
         try {
-            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\smiley.jpg"));
+            BufferedImage originalPicture = ImageIO.read(new File("Pictures\\smiley.jpg"));
 
-            int pictureWidth = originalImgage.getWidth();
-            int pictureHeight = originalImgage.getHeight();
+            int pictureWidth = originalPicture.getWidth();
+            int pictureHeight = originalPicture.getHeight();
 
             int buttonWidth = pictureWidth / column;
             int buttonHeight = pictureHeight / row;
@@ -375,12 +374,9 @@ public class GameBoard extends JFrame {
                 y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
-
-                        System.out.println("creating piece: " + counter);
-
-                        BufferedImage SubImgage = originalImgage.getSubimage(y, x, buttonWidth, buttonHeight);
+                        BufferedImage SubImage = originalPicture.getSubimage(y, x, buttonWidth, buttonHeight);
                         File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
-                        ImageIO.write(SubImgage, "jpg", outputFile);
+                        ImageIO.write(SubImage, "jpg", outputFile);
                         counter++;
                         y += buttonWidth;
 
@@ -406,13 +402,11 @@ public class GameBoard extends JFrame {
             System.out.println("Brick " + i + " created");
         }
 
-
         JButton blankButton = new JButton("");
         blankButton.setOpaque(false);
         blankButton.setContentAreaFilled(false);
         blankButton.setBorderPainted(false);
         Button b = new Button(blankButton, 0);
-
 
         buttons.add(b);
         return buttons;
