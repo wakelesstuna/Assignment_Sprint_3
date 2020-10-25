@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -371,15 +372,16 @@ public class GameBoard extends JFrame {
             int counter = 1;
 
             for (int i = 0; i < 16; i++) {
-                y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
-                        BufferedImage SubImage = originalPicture.getSubimage(y, x, buttonWidth, buttonHeight);
+                        BufferedImage SubImage = originalPicture.getSubimage(x, y, buttonWidth, buttonHeight);
                         File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
                         ImageIO.write(SubImage, "jpg", outputFile);
                         counter++;
                         y += buttonWidth;
 
+                    } catch (RasterFormatException e ){
+                        System.out.print("");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
