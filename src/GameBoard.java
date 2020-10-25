@@ -1,8 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import java.util.List;
 
 public class GameBoard extends JFrame {
 
-    List<ScoreBoardObject> highScoreList = new ArrayList<>();
     List<Button> winCondition = buttonFactory();
     List<Button> buttonsList = buttonFactory();
     Util u = new Util();
@@ -38,10 +37,12 @@ public class GameBoard extends JFrame {
 
     JButton newGameButton = new JButton("New Game");
     JButton cheatButton = new JButton("Cheat");
+    JButton playButton = new JButton("Play");
+    JButton stopButton = new JButton("Stop");
 
     public GameBoard(String playerName) {
         splitImageInto16pieces();
-        //u.loadGameMusic(musicPath); // comment out to kill music
+        u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());
 
         add(parent);
@@ -54,13 +55,17 @@ public class GameBoard extends JFrame {
         labelTitle.setForeground(Color.WHITE);
 
         newGameButton.addActionListener(e -> newGame());
+        playButton.addActionListener(e -> u.playMusic());
+        stopButton.addActionListener(e -> u.stopMusic());
         cheatButton.addActionListener(e -> cheatButton());
 
         bottomPanel.add(playerNameLabel = new JLabel("Player: " + playerName));
         bottomPanel.add(gameTime);
         bottomPanel.add(clickCounter);
-        bottomPanel.add(cheatButton);
         bottomPanel.add(newGameButton);
+        bottomPanel.add(playButton);
+        bottomPanel.add(stopButton);
+        bottomPanel.add(cheatButton);
 
         renderButtons(checkIfGameIsWinnable(shuffle(buttonsList), 4));
 
@@ -72,7 +77,79 @@ public class GameBoard extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    //============================= NewGame and CheatButton functions ================================\\
+    public void newGame() {
 
+        gameOver = false;
+        gameBoard.removeAll();
+        buttonsList.clear();
+        u.setSeconds(0);
+        u.setMinutes(0);
+        u.clickCounterReset();
+        clickCounter.setText("Antal klick: " + u.counter);
+
+        buttonsList = buttonFactory();
+        addActionListenerToButtons();
+        shuffle(buttonsList);
+        renderButtons(buttonsList);
+        u.gameTimerStop();
+        u.gameTimer(gameTime);
+    }
+
+    public void cheatButton() {
+        u.gameTimerStop();
+        gameBoard.removeAll();
+        buttonsList.clear();
+        turnAllButtonsGreenWhenWin(winCondition);
+        renderButtons(winCondition);
+        showLoserScreen();
+        gameBoard.updateUI();
+    }
+
+    //====================================== Winner functions =========================================\\
+    public List<Button> checkIfGameIsWinnable(List<Button> list, int numberOfRows){
+        while (u.isGameSolvable(list,numberOfRows)){
+            shuffle(list);
+        }
+        return list;
+    }
+
+    public boolean isWinCondition() {
+        for (int i = 0; i < winCondition.size(); i++) {
+            int tempWin = winCondition.get(i).getButtonID();
+            int tempActual = buttonsList.get(i).getButtonID();
+            if (tempWin != tempActual)
+                return false;
+        }
+        return true;
+    }
+
+    public void turnAllButtonsGreenWhenWin(List<Button> list) {
+        for (Button button : list) {
+            button.getButton().setBackground(Color.GREEN);
+        }
+    }
+
+    //==================================== Winner And Loser Windows ====================================\\
+    public void winnerScreen(){
+        JFrame winnerScreen = new JFrame();
+        winnerScreen.add(winnerGif);
+        winnerScreen.setLocation(650,250);
+        winnerScreen.pack();
+        winnerScreen.setVisible(true);
+    }
+
+    public void showLoserScreen(){
+        JFrame loserScreen = new JFrame();
+        loserScreen.add(loserGif);
+        loserScreen.setTitle("CHEATER!!!");
+        loserScreen.setLocation(700,300);
+        loserScreen.pack();
+        loserScreen.setVisible(true);
+    }
+
+
+    //======================================== Button functions ========================================\\
     public List<Button> buttonFactory() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
@@ -93,57 +170,6 @@ public class GameBoard extends JFrame {
         return buttons;
     }
 
-    public void renderButtons(List<Button> list) {
-        list.forEach(Button -> {
-            gameBoard.add(Button.getButton());
-            System.out.println("Working " + Button.getButtonID());
-        });
-    }
-
-    public List<Button> shuffle(List<Button> list){
-        Collections.shuffle(list);
-        int i = u.findEmptyButton(list, 0);
-        Collections.swap(list, i, list.size() -1);
-        return list;
-    }
-
-    public void cheatButton() {
-        u.gameTimerStop();
-        gameBoard.removeAll();
-        buttonsList.clear();
-        turnAllButtonsGreenWhenWin(winCondition);
-        renderButtons(winCondition);
-        showLoserScreen();
-        gameBoard.updateUI();
-    }
-
-    public void showLoserScreen(){
-        JFrame loserScreen = new JFrame();
-        loserScreen.add(loserGif);
-        loserScreen.setTitle("CHEATER!!!");
-        loserScreen.setLocation(700,300);
-        loserScreen.pack();
-        loserScreen.setVisible(true);
-    }
-
-    public void newGame() {
-
-        gameOver = false;
-        gameBoard.removeAll();
-        buttonsList.clear();
-        u.setSeconds(0);
-        u.setMinutes(0);
-        u.clickCounterReset();
-        clickCounter.setText("Antal klick: " + u.counter);
-
-        buttonsList = buttonFactory();
-        addActionListenerToButtons();
-        shuffle(buttonsList);
-        renderButtons(buttonsList);
-        u.gameTimerStop();
-        u.gameTimer(gameTime);
-    }
-
     public void addActionListenerToButtons() {
         for (Button button : buttonsList) {
             if (button != null) {
@@ -155,38 +181,21 @@ public class GameBoard extends JFrame {
         }
     }
 
-    public int findEmptyButton() {
-        int emptyButtonIndex = 0;
-        for (Button button : buttonsList) {
-            if (button.getButtonID() == 0) {
-                emptyButtonIndex = buttonsList.indexOf(button);
-            }
-        }
-        return emptyButtonIndex;
-    }
-
-    public void turnAllButtonsGreenWhenWin(List<Button> list) {
-        for (Button button : list) {
-            button.getButton().setBackground(Color.GREEN);
-        }
-    }
-
-    public boolean isWinCondition() {
-        for (int i = 0; i < winCondition.size(); i++) {
-            int tempWin = winCondition.get(i).getButtonID();
-            int tempActual = buttonsList.get(i).getButtonID();
-            if (tempWin != tempActual)
-                return false;
-        }
-        return true;
-    }
-
-    public List<Button> checkIfGameIsWinnable(List<Button> list, int numberOfRows){
-        while (u.isGameSolvable(list,numberOfRows)){
-            shuffle(list);
-        }
+    public List<Button> shuffle(List<Button> list){
+        Collections.shuffle(list);
+        int i = u.findEmptyButton(list, 0);
+        Collections.swap(list, i, list.size() -1);
         return list;
     }
+
+    public void renderButtons(List<Button> list) {
+        list.forEach(Button -> {
+            gameBoard.add(Button.getButton());
+            System.out.println("Working " + Button.getButtonID());
+        });
+    }
+
+    //====================================== MoveButton Functions ======================================\\
 
     public void moveButton(int index) {
         if (!gameOver) {
@@ -200,15 +209,6 @@ public class GameBoard extends JFrame {
                 winnerScreen();
             }
         }
-    }
-
-    public void winnerScreen(){
-        JFrame winnerScreen = new JFrame();
-        winnerScreen.add(winnerGif);
-        winnerScreen.setLocation(650,250);
-        winnerScreen.pack();
-        winnerScreen.setVisible(true);
-
     }
 
     public void checkIfClickedButtonIsNextToEmptyButton(Button clickedButton) {
@@ -344,14 +344,25 @@ public class GameBoard extends JFrame {
         }
     }
 
+    public int findEmptyButton() {
+        int emptyButtonIndex = 0;
+        for (Button button : buttonsList) {
+            if (button.getButtonID() == 0) {
+                emptyButtonIndex = buttonsList.indexOf(button);
+            }
+        }
+        return emptyButtonIndex;
+    }
+
+    //========================================= ImageHandling ==========================================\\
     public void splitImageInto16pieces() {
         int row = 4;
         int column = 4;
         try {
-            BufferedImage originalImgage = ImageIO.read(new File("Pictures\\smiley.jpg"));
+            BufferedImage originalPicture = ImageIO.read(new File("Pictures\\smiley.jpg"));
 
-            int pictureWidth = originalImgage.getWidth();
-            int pictureHeight = originalImgage.getHeight();
+            int pictureWidth = originalPicture.getWidth();
+            int pictureHeight = originalPicture.getHeight();
 
             int buttonWidth = pictureWidth / column;
             int buttonHeight = pictureHeight / row;
@@ -361,18 +372,16 @@ public class GameBoard extends JFrame {
             int counter = 1;
 
             for (int i = 0; i < 16; i++) {
-                y = 0;
                 for (int j = 0; j < column; j++) {
                     try {
-
-                        System.out.println("creating piece: " + counter);
-
-                        BufferedImage SubImgage = originalImgage.getSubimage(y, x, buttonWidth, buttonHeight);
+                        BufferedImage SubImage = originalPicture.getSubimage(x, y, buttonWidth, buttonHeight);
                         File outputFile = new File("Pictures\\SplitImage\\smiley" + counter + ".JPG");
-                        ImageIO.write(SubImgage, "jpg", outputFile);
+                        ImageIO.write(SubImage, "jpg", outputFile);
                         counter++;
                         y += buttonWidth;
 
+                    } catch (RasterFormatException e ){
+                        System.out.print("");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -386,6 +395,7 @@ public class GameBoard extends JFrame {
 
         }
     }
+
     public List<Button> buttonFactoryImage() {
         List<Button> buttons = new ArrayList<>();
         for (int i = 1; i < 16; i++) {
@@ -394,17 +404,16 @@ public class GameBoard extends JFrame {
             System.out.println("Brick " + i + " created");
         }
 
-
         JButton blankButton = new JButton("");
         blankButton.setOpaque(false);
         blankButton.setContentAreaFilled(false);
         blankButton.setBorderPainted(false);
         Button b = new Button(blankButton, 0);
 
-
         buttons.add(b);
         return buttons;
     }
+
     public void setImageOnButton(){
         int row = 4;
         int column = 4;
