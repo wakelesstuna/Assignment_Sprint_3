@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +12,21 @@ import java.util.List;
 
 public class GameBoard extends JFrame {
 
+    List<ScoreBoardObject> highScoreList = new ArrayList<>();
     List<Button> winCondition = buttonFactory();
     List<Button> buttonsList = buttonFactory();
     Util u = new Util();
 
+    Icon winnerIcon = new ImageIcon(this.getClass().getResource("assets/image/winner.gif"));
+    JLabel winnerGif = new JLabel(winnerIcon);
+    Icon loserIcon = new ImageIcon(this.getClass().getResource("assets/image/loser.gif"));
+    JLabel loserGif = new JLabel(loserIcon);
+
     boolean gameOver = false;
-    String playerName;
     String musicPath = "src/assets/sound/Bubble-Gum-Puzzler-2 (online-audio-converter.com).wav";
     String clickPath = "src/assets/sound/Lamp-Switch_Off (online-audio-converter.com).wav";
 
     ImagePanel parent = new ImagePanel("src/assets/image/BackMain.jpg");
-    JPanel title = new JPanel();
     JPanel gameBoard = new JPanel(new GridLayout(4, 4));
     JPanel bottomPanel = new JPanel(new FlowLayout());
 
@@ -40,14 +45,13 @@ public class GameBoard extends JFrame {
         parent.setLayout(new FlowLayout());
 
         add(parent);
-        parent.add(title, BorderLayout.NORTH);
+        parent.add(labelTitle, BorderLayout.NORTH);
         parent.add(gameBoard, BorderLayout.CENTER);
         parent.add(bottomPanel, BorderLayout.SOUTH);
 
-        title.setBackground(Color.GREEN);
-        title.add(labelTitle);
         gameBoard.setPreferredSize(new Dimension(500, 500));
         labelTitle.setFont(new Font("Georgia", Font.BOLD, 32));
+        labelTitle.setForeground(Color.WHITE);
 
         newGameButton.addActionListener(e -> newGame());
         cheatButton.addActionListener(e -> cheatButton());
@@ -107,8 +111,19 @@ public class GameBoard extends JFrame {
         u.gameTimerStop();
         gameBoard.removeAll();
         buttonsList.clear();
+        turnAllButtonsGreenWhenWin(winCondition);
         renderButtons(winCondition);
+        showLoserScreen();
         gameBoard.updateUI();
+    }
+
+    public void showLoserScreen(){
+        JFrame loserScreen = new JFrame();
+        loserScreen.add(loserGif);
+        loserScreen.setTitle("CHEATER!!!");
+        loserScreen.setLocation(700,300);
+        loserScreen.pack();
+        loserScreen.setVisible(true);
     }
 
     public void newGame() {
@@ -127,27 +142,6 @@ public class GameBoard extends JFrame {
         renderButtons(buttonsList);
         u.gameTimerStop();
         u.gameTimer(gameTime);
-    }
-
-    public void winScreen() {
-
-        u.gameTimerStop();
-        String gameTimeComplete = gameTime.getText();
-        JTextArea test = new JTextArea("were");
-        JFrame winFrame = new JFrame();
-        JPanel winPanel = new JPanel(new GridLayout(3, 1));
-        JLabel winLabel = new JLabel("WINNER WINNER", SwingConstants.CENTER);
-        JLabel timeLabel = new JLabel(gameTimeComplete, SwingConstants.CENTER);
-        JLabel playerNameLabel = new JLabel(playerName, SwingConstants.CENTER);
-
-        winPanel.add(playerNameLabel);
-        winPanel.add(winLabel);
-        winPanel.add(timeLabel);
-        winFrame.add(test);
-
-        winFrame.setLocation(600, 200);
-        winFrame.setSize(300, 300);
-        winFrame.setVisible(true);
     }
 
     public void addActionListenerToButtons() {
@@ -171,8 +165,8 @@ public class GameBoard extends JFrame {
         return emptyButtonIndex;
     }
 
-    public void turnAllButtonsGreenWhenWin() {
-        for (Button button : buttonsList) {
+    public void turnAllButtonsGreenWhenWin(List<Button> list) {
+        for (Button button : list) {
             button.getButton().setBackground(Color.GREEN);
         }
     }
@@ -201,10 +195,20 @@ public class GameBoard extends JFrame {
             clickCounter.setText("Antal klick: " + u.counter++);
             gameBoard.updateUI();
             if (gameOver = isWinCondition()) {
-                turnAllButtonsGreenWhenWin();
-                winScreen();
+                u.gameTimerStop();
+                turnAllButtonsGreenWhenWin(buttonsList);
+                winnerScreen();
             }
         }
+    }
+
+    public void winnerScreen(){
+        JFrame winnerScreen = new JFrame();
+        winnerScreen.add(winnerGif);
+        winnerScreen.setLocation(650,250);
+        winnerScreen.pack();
+        winnerScreen.setVisible(true);
+
     }
 
     public void checkIfClickedButtonIsNextToEmptyButton(Button clickedButton) {
