@@ -51,7 +51,8 @@ public class StartMenu extends JFrame {
         checkHighScore.setPreferredSize(new Dimension(150,50));
         checkHighScore.setFont(new Font("TimesNewRoman", Font.BOLD, 20));
         checkHighScore.addActionListener(e ->{
-            highScorePanel = new ScoreBoardUI(highScoreList);
+            GameBoard g = new GameBoard(nameTextField.getText());
+            setVisible(false);
         });
 
 

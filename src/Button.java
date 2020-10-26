@@ -9,7 +9,7 @@ public class Button {
         this.buttonID = buttonID;
     }
 
-    public Button (JButton button, int buttonID, ImageIcon imageIcon){
+    public Button(JButton button, int buttonID, ImageIcon imageIcon) {
 
         button.setIcon(imageIcon);
         this.button = button;
@@ -17,15 +17,11 @@ public class Button {
 
     }
 
-    public JButton getButton(){
+    public JButton getButton() {
         return button;
     }
 
-    public void setButton(JButton button){
-        this.button = button;
-    }
-
-    public int getButtonID(){
+    public int getButtonID() {
         return buttonID;
     }
 }

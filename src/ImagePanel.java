@@ -14,7 +14,6 @@ public class ImagePanel extends JPanel {
         }catch (IOException e){
             System.out.println("Bilden hittades inte");
         }
-
     }
 
     public void paintComponent(Graphics g){

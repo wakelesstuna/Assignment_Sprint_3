@@ -34,13 +34,13 @@ public class Util {
         }
     }
 
-    public void stopMusic(){
-        play.stop();
-    }
-
     public void playMusic(){
         play.start();
         play.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public void stopMusic(){
+        play.stop();
     }
 
     public void addButtonClickSound(String musicPath){

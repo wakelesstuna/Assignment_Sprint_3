@@ -12,8 +12,8 @@ import java.util.List;
 
 public class GameBoard extends JFrame {
 
-    List<Button> winCondition = buttonFactoryImage();
-    List<Button> buttonsList = buttonFactoryImage();
+    List<Button> winCondition = buttonFactory();
+    List<Button> buttonsList = buttonFactory();
     Util u = new Util();
 
     Icon winnerIcon = new ImageIcon(this.getClass().getResource("assets/image/winner.gif"));
@@ -76,7 +76,6 @@ public class GameBoard extends JFrame {
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        System.out.println("Oscar vet inte hur man mergar");
     }
     //============================= NewGame and CheatButton functions ================================\\
     public void newGame() {
@@ -406,27 +405,10 @@ public class GameBoard extends JFrame {
         }
 
         JButton blankButton = new JButton("");
-        blankButton.setOpaque(false);
-        blankButton.setContentAreaFilled(false);
-        blankButton.setBorderPainted(false);
+        blankButton.setBackground(Color.BLACK);
         Button b = new Button(blankButton, 0);
 
         buttons.add(b);
         return buttons;
-    }
-
-    public void setImageOnButton(){
-        int row = 4;
-        int column = 4;
-        int counter = 0;
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                counter++;
-                ImageIcon image = new ImageIcon("Pictures\\SplitImage\\sunset" + j + i + ".JPG");
-
-            }
-        }
-
     }
 }
