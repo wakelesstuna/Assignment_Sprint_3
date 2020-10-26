@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class StartMenu extends JFrame {
 
+    ScoreBoardUI highScorePanel;
+    List<ScoreBoardObject> highScoreList = new ArrayList<>(); // deserizalize
     ImagePanel bottom = new ImagePanel("src/assets/image/BackMain.jpg");
     JLabel gapLabel1 = new JLabel("                  ");
     JLabel titleLabel = new JLabel("BEST GAME EVER", SwingConstants.CENTER);
@@ -47,8 +51,7 @@ public class StartMenu extends JFrame {
         checkHighScore.setPreferredSize(new Dimension(150,50));
         checkHighScore.setFont(new Font("TimesNewRoman", Font.BOLD, 20));
         checkHighScore.addActionListener(e ->{
-            // lägga in highscorelista metod här
-            System.out.println("Funkar");
+            highScorePanel = new ScoreBoardUI(highScoreList);
         });
 
 
@@ -65,12 +68,15 @@ public class StartMenu extends JFrame {
         add(bottom);
 
 
-
         setLocation(700,200);
         setSize(450,600);
         setResizable(false);
         setVisible(true);
 
+    }
+
+    public ScoreBoardUI getHighScorePanel() {
+        return highScorePanel;
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,3 @@
-import java.io.IOException;
 
 public class Main {
 
@@ -7,6 +6,7 @@ public class Main {
     }
 
 }
+
 /*
  Utilklass med
    X - bakgrundsmusik
