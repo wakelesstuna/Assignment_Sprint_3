@@ -40,7 +40,13 @@ public class GameBoard extends JFrame {
     JButton playButton = new JButton("Play");
     JButton stopButton = new JButton("Stop");
 
-    public GameBoard(String playerName) {
+    public GameBoard(String playerName, boolean numbersOrPictures) {
+        if(!numbersOrPictures){
+            buttonsList = buttonFactoryImage();
+        }
+        else{
+            buttonsList = buttonFactory();
+        }
         splitImageInto16pieces();
         u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());

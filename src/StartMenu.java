@@ -16,9 +16,9 @@ public class StartMenu extends JFrame {
     JLabel gapLabel3 = new JLabel("               ");
     JTextField nameTextField = new JTextField(15);
     JLabel gapLabel5 = new JLabel("                                      ");
-    JButton enterButton = new JButton("Enter");
+    JButton newNumberGame = new JButton("New Number Game");
     JLabel gapLabel4 = new JLabel("                                      ");
-    JButton checkHighScore = new JButton("High Score");
+    JButton newPictureGame = new JButton("New Picture Game");
 
     public StartMenu() {
 
@@ -39,19 +39,19 @@ public class StartMenu extends JFrame {
 
         gapLabel4.setFont(new Font("TimesNewRoman", Font.BOLD, 35));
 
-        enterButton.setSize(new Dimension(150,50));
-        enterButton.setFont(new Font("TimesNewRoman", Font.BOLD, 28));
-        enterButton.addActionListener(e -> {
-            GameBoard g = new GameBoard(nameTextField.getText());
+        newNumberGame.setSize(new Dimension(150,50));
+        newNumberGame.setFont(new Font("TimesNewRoman", Font.BOLD, 28));
+        newNumberGame.addActionListener(e -> {
+            GameBoard g = new GameBoard(nameTextField.getText(),true);
             setVisible(false);
         });
 
         gapLabel5.setFont(new Font("TimesNewRoman", Font.BOLD, 35));
 
-        checkHighScore.setPreferredSize(new Dimension(150,50));
-        checkHighScore.setFont(new Font("TimesNewRoman", Font.BOLD, 20));
-        checkHighScore.addActionListener(e ->{
-            GameBoard g = new GameBoard(nameTextField.getText());
+        newPictureGame.setSize(new Dimension(150,50));
+        newPictureGame.setFont(new Font("TimesNewRoman", Font.BOLD, 20));
+        newPictureGame.addActionListener(e ->{
+            GameBoard g = new GameBoard(nameTextField.getText(),false);
             setVisible(false);
         });
 
@@ -63,9 +63,9 @@ public class StartMenu extends JFrame {
         bottom.add(gapLabel3);
         bottom.add(nameTextField);
         bottom.add(gapLabel4);
-        bottom.add(enterButton);
+        bottom.add(newNumberGame);
         bottom.add(gapLabel5);
-        bottom.add(checkHighScore);
+        bottom.add(newPictureGame);
         add(bottom);
 
 
