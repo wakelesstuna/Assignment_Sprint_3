@@ -168,25 +168,9 @@ public class Util {
         return count;
     }
 
-
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public String clickCounter(){
-        counter++;
-        System.out.println("counter value" + counter);
-        return "Antal klick: " + counter;
-
-    }
-
     public void clickCounterReset(){
         counter = 0;
         System.out.println("Du har nollställt klickräknaren");
-    }
-
-    public int getCounter() {
-        return counter;
     }
 
     public void setSeconds(int seconds) {
