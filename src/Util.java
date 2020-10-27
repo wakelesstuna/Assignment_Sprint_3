@@ -72,8 +72,6 @@ public class Util {
                 minutes++;
             }
             label.setText("Tid: " + minutes + ':' + secondZero + seconds);
-            System.out.println("Tid: " + minutes + ':' + secondZero + seconds);
-            //Ska returna en String sen som man skriver ut till en label
         };
 
         int timerDelay = 1000;
