@@ -15,6 +15,7 @@ public class Util {
     protected int counter = 0;
     Timer timer;
 
+    //------------------------------- Music and SFX -------------------------------------------\\
     public void loadGameMusic(String musicPath){
         try {
             File music = new File(musicPath);
@@ -59,6 +60,7 @@ public class Util {
         }
     }
 
+    //------------------------------------ Timer ------------------------------------------------\\
     public void gameTimer(JLabel label){
         ActionListener gameTimer = e -> {
             String secondZero = "";
@@ -82,6 +84,21 @@ public class Util {
     public void gameTimerStop(){
         timer.stop();
     }
+
+    public void clickCounterReset(){
+        counter = 0;
+        System.out.println("Du har nollställt klickräknaren");
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    //------------------------------ Is Game Solvable Algorithm ---------------------------------\\
 
     public boolean isGameSolvable(List<Button> buttonList, int rowsOfTheGame) {
         if (!isEven(rowsOfTheGame)) {
@@ -142,16 +159,4 @@ public class Util {
         return count;
     }
 
-    public void clickCounterReset(){
-        counter = 0;
-        System.out.println("Du har nollställt klickräknaren");
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
 }
