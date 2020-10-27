@@ -6,8 +6,6 @@ import java.util.List;
 
 public class StartMenu extends JFrame {
 
-    ScoreBoardUI highScorePanel;
-    List<ScoreBoardObject> highScoreList = new ArrayList<>(); // deserizalize
     ImagePanel bottom = new ImagePanel("src/assets/image/BackMain.jpg");
     JLabel gapLabel1 = new JLabel("                  ");
     JLabel titleLabel = new JLabel("BEST GAME EVER", SwingConstants.CENTER);
@@ -74,13 +72,5 @@ public class StartMenu extends JFrame {
         setResizable(false);
         setVisible(true);
 
-    }
-
-    public ScoreBoardUI getHighScorePanel() {
-        return highScorePanel;
-    }
-
-    public static void main(String[] args) {
-        StartMenu s = new StartMenu();
     }
 }

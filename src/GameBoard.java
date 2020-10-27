@@ -41,13 +41,14 @@ public class GameBoard extends JFrame {
     JButton stopButton = new JButton("Stop");
 
     public GameBoard(String playerName, boolean numbersOrPictures) {
+        splitImageInto16pieces();
         if(!numbersOrPictures){
             buttonsList = buttonFactoryImage();
         }
         else{
             buttonsList = buttonFactory();
         }
-        splitImageInto16pieces();
+
         u.loadGameMusic(musicPath); // comment out to kill music
         parent.setLayout(new FlowLayout());
 
@@ -122,9 +123,9 @@ public class GameBoard extends JFrame {
 
     public boolean isWinCondition() {
         for (int i = 0; i < winCondition.size(); i++) {
-            int tempWin = winCondition.get(i).getButtonID();
-            int tempActual = buttonsList.get(i).getButtonID();
-            if (tempWin != tempActual)
+            int win = winCondition.get(i).getButtonID();
+            int actual = buttonsList.get(i).getButtonID();
+            if (win != actual)
                 return false;
         }
         return true;
@@ -167,9 +168,7 @@ public class GameBoard extends JFrame {
         }
 
         JButton blankButton = new JButton();
-        blankButton.setOpaque(false);
-        blankButton.setContentAreaFilled(false);
-        blankButton.setBorderPainted(false);
+        blankButton.setVisible(false);
         Button b = new Button(blankButton, 0);
 
         buttons.add(b);
@@ -202,20 +201,6 @@ public class GameBoard extends JFrame {
     }
 
     //====================================== MoveButton Functions ======================================\\
-
-    public void moveButton(int index) {
-        if (!gameOver) {
-            Collections.swap(buttonsList, index, findEmptyButton());
-            renderButtons(buttonsList);
-            clickCounter.setText("Antal klick: " + u.counter++);
-            gameBoard.updateUI();
-            if (gameOver = isWinCondition()) {
-                u.gameTimerStop();
-                turnAllButtonsGreenWhenWin(buttonsList);
-                winnerScreen();
-            }
-        }
-    }
 
     public void checkIfClickedButtonIsNextToEmptyButton(Button clickedButton) {
         switch (buttonsList.indexOf(clickedButton)) {
@@ -346,6 +331,20 @@ public class GameBoard extends JFrame {
                     moveButton(15);
                 else if (buttonsList.get(14).equals(buttonsList.get(findEmptyButton())))
                     moveButton(15);
+            }
+        }
+    }
+
+    public void moveButton(int index) {
+        if (!gameOver) {
+            Collections.swap(buttonsList, index, findEmptyButton());
+            renderButtons(buttonsList);
+            clickCounter.setText("Antal klick: " + u.counter++);
+            gameBoard.updateUI();
+            if (gameOver = isWinCondition()) {
+                u.gameTimerStop();
+                turnAllButtonsGreenWhenWin(buttonsList);
+                winnerScreen();
             }
         }
     }
