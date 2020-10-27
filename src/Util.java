@@ -98,22 +98,10 @@ public class Util {
         return false;
     }
 
-    /**
-     * Check if a number is even or not
-     *
-     * @param n int
-     * @return boolean
-     */
     public boolean isEven(int n) {
         return n % 2 == 0;
     }
 
-    /**
-     * Check witch row the emptyButton is on
-     *
-     * @param buttonsList list
-     * @return int
-     */
     public int checkWitchRowEmptyButtonIsOn(List<Button> buttonsList) {
         int emptyButton = findEmptyButton(buttonsList, 0);
         if (emptyButton >= 0 && emptyButton <= 3) {
@@ -129,12 +117,6 @@ public class Util {
         }
     }
 
-    /**
-     * Finds Button with ButtonID 0, and return index as int
-     *
-     * @param buttonsList list
-     * @return int
-     */
     public int findEmptyButton(List<Button> buttonsList, int buttonID) {
         int emptyButtonIndex = 0;
         for (Button button : buttonsList) {
@@ -145,12 +127,6 @@ public class Util {
         return emptyButtonIndex;
     }
 
-    /**
-     * Finds out the InterversionCount of a buttonlist based on the buttonID
-     *
-     * @param list Button
-     * @return int
-     */
     public int listInversionCount(List<Button> list) {
 
         int emptyButtonIndex = findEmptyButton(list, 0);
